@@ -2,9 +2,9 @@ import React, {Fragment} from "react";
 import {Menu} from 'antd';
 import 'antd/dist/antd.css';
 import {HomeOutlined, LogoutOutlined, UserOutlined, DashboardOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import Home from "./components/Home";
+import Home from "./Home";
 
-class App extends React.Component {
+class Dashboard extends React.Component {
     state = {
         current: 'home',
     };
@@ -66,4 +66,4 @@ class App extends React.Component {
     }
 }
 
-export default App;
+export default Dashboard;
