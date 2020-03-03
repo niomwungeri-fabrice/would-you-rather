@@ -2,15 +2,17 @@ import React, {Fragment} from "react";
 import {Menu} from 'antd';
 import 'antd/dist/antd.css';
 import {HomeOutlined, LogoutOutlined, UserOutlined, DashboardOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import Home from "./components/Home";
+import Home from "./Home";
+import {Link} from "react-router-dom";
+import {connect} from "react-redux";
+import {setAuthenticatedUser} from "../../redux/actions/users";
 
-class App extends React.Component {
+class Dashboard extends React.Component {
     state = {
         current: 'home',
     };
 
     handleClick = e => {
-        console.log('click ', e);
         this.setState({
             current: e.key,
         });
@@ -23,14 +25,13 @@ class App extends React.Component {
                 return (<h1>newQuestion</h1>);
             case 'leaderBoard':
                 return (<h1>Leader</h1>);
-            case 'logout':
-                return (<h1>logout</h1>);
             default:
                 break;
         }
     };
 
     render() {
+        const {username, users, dispatch} = this.props;
         return (
             <Fragment>
                 <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
@@ -51,11 +52,11 @@ class App extends React.Component {
                         marginLeft: "50px"
                     }}>
                         <UserOutlined/>
-                        <span> Fabrice N</span>
+                        <span> Hello, {users[username].name}</span>
                     </Menu.Item>
                     <Menu.Item key="logout">
                         <LogoutOutlined/>
-                        Logout
+                        <Link onClick={() => (dispatch(setAuthenticatedUser('')))} to='/'>logout</Link>
                     </Menu.Item>
                 </Menu>
                 <div>
@@ -66,4 +67,10 @@ class App extends React.Component {
     }
 }
 
-export default App;
+const propsToState = ({username, users}) => {
+    return {
+        username,
+        users
+    }
+};
+export default connect(propsToState)(Dashboard);
