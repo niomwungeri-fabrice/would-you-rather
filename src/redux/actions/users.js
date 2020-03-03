@@ -18,7 +18,7 @@ export const setAuthenticatedUser = (username) => {
     }
 };
 
-export const handleInitialData = () => (dispatch) => {
+export const handleInitialUsers = () => (dispatch) => {
     dispatch(showLoading());
     return _getUsers().then(users => {
         dispatch(receiveUsers(users));
