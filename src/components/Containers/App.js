@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {handleInitialData} from "../../redux/actions/users";
 import LoadingBar from 'react-redux-loading';
 import Login from "./LogIn";
+import Dashboard from "./Dashboard";
 
 class App extends Component {
     componentDidMount() {
@@ -20,6 +21,7 @@ class App extends Component {
                             ? null
                             : <div>
                                 <Route path='/' exact component={Login}/>
+                                <Route path='/add' exact component={Dashboard}/>
                             </div>}
                     </div>
                 </Fragment>

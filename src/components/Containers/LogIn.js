@@ -3,11 +3,32 @@ import {Row, Col, Button, Select, Form} from 'antd';
 import 'antd/dist/antd.css';
 import {connect} from "react-redux";
 import {withRouter} from 'react-router-dom'
+import {setAuthenticatedUser} from '../../redux/actions/users'
 
 class Login extends Component {
+    state = {
+        username: '',
+        validationMessage: ''
+    };
+    handleClick = () => {
+        const {history, dispatch} = this.props;
+        if (this.state.username === '') {
+            return this.setState({
+                validationMessage: "Please select user"
+            })
+        }
+        dispatch(setAuthenticatedUser(this.state.username));
+        return history.push('/add');
+    };
+
+    handleChange = (e) => {
+        this.setState({
+            username: e
+        })
+    };
+
     render() {
         const {users} = this.props;
-        console.log(users, "=====from login");
         return (
             <div>
                 <Row style={{
@@ -19,15 +40,17 @@ class Login extends Component {
                             layout="horizontal"
                         >
                             <Form.Item>
-                                <Select>
+                                <Select
+                                    onChange={this.handleChange}>
                                     {Object.keys(users).map(user => (
                                         <Select.Option key={user} value={user}>{users[user].name}</Select.Option>
                                     ))}
                                 </Select>
                             </Form.Item>
-                            <Button type="primary" block>
+                            <Button onClick={this.handleClick} type="primary" block>
                                 login
                             </Button>
+                            <div>{this.state.validationMessage}</div>
                         </Form>
                     </Col>
                     <Col span={10}></Col>
@@ -35,11 +58,11 @@ class Login extends Component {
             </div>
         );
     }
-};
+}
 
-const propsToState = ({users}) => {
+const propsToState = ({users,}) => {
     return {
-        users
+        users,
     }
 };
 
