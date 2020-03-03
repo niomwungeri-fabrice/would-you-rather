@@ -2,23 +2,26 @@ import React, {Component} from "react";
 import {Row, Col, Button, Select, Form} from 'antd';
 import 'antd/dist/antd.css';
 import {connect} from "react-redux";
-import {withRouter} from 'react-router-dom'
-import {setAuthenticatedUser} from '../../redux/actions/users'
+import {withRouter, Redirect} from 'react-router-dom'
+import {setAuthenticatedUser} from '../../redux/actions/users';
 
 class Login extends Component {
     state = {
         username: '',
-        validationMessage: ''
+        validationMessage: '',
+        redirectToReferrer: false
     };
-    handleClick = () => {
-        const {history, dispatch} = this.props;
+    handleLogin = () => {
+        const {dispatch} = this.props;
         if (this.state.username === '') {
-            return this.setState({
+            this.setState({
                 validationMessage: "Please select user"
             })
         }
+        this.setState({
+            redirectToReferrer: true
+        });
         dispatch(setAuthenticatedUser(this.state.username));
-        return history.push('/add');
     };
 
     handleChange = (e) => {
@@ -29,6 +32,13 @@ class Login extends Component {
 
     render() {
         const {users} = this.props;
+        const {from} = this.props.location.state || {from: {pathname: '/'}};
+        const {redirectToReferrer} = this.state;
+
+        if (redirectToReferrer === true) {
+            return <Redirect to={from}/>
+        }
+
         return (
             <div>
                 <Row style={{
@@ -47,7 +57,7 @@ class Login extends Component {
                                     ))}
                                 </Select>
                             </Form.Item>
-                            <Button onClick={this.handleClick} type="primary" block>
+                            <Button onClick={this.handleLogin} type="primary" block>
                                 login
                             </Button>
                             <div>{this.state.validationMessage}</div>
@@ -60,7 +70,7 @@ class Login extends Component {
     }
 }
 
-const propsToState = ({users,}) => {
+const propsToState = ({users}) => {
     return {
         users,
     }

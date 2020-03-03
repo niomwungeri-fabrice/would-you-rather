@@ -4,7 +4,9 @@ import {connect} from "react-redux";
 import {handleInitialData} from "../../redux/actions/users";
 import LoadingBar from 'react-redux-loading';
 import Login from "./LogIn";
-import Dashboard from "./Dashboard";
+import LeaderBoard from "./LeaderBoard";
+import PrivateRoute from "../PrivateRoute";
+import Home from "./Home";
 
 class App extends Component {
     componentDidMount() {
@@ -20,8 +22,9 @@ class App extends Component {
                         {this.props.loading === true
                             ? null
                             : <div>
-                                <Route path='/' exact component={Login}/>
-                                <Route path='/add' exact component={Dashboard}/>
+                                <Route path='/login' exact component={Login}/>
+                                <PrivateRoute path='/leaderboard' exact component={LeaderBoard}/>
+                                <PrivateRoute path='/home' exact component={Home}/>
                             </div>}
                     </div>
                 </Fragment>

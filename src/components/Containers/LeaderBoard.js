@@ -7,7 +7,7 @@ import {Link} from "react-router-dom";
 import {connect} from "react-redux";
 import {setAuthenticatedUser} from "../../redux/actions/users";
 
-class Dashboard extends React.Component {
+class LeaderBoard extends React.Component {
     state = {
         current: 'home',
     };
@@ -55,8 +55,9 @@ class Dashboard extends React.Component {
                         <span> Hello, {users[username].name}</span>
                     </Menu.Item>
                     <Menu.Item key="logout">
-                        <LogoutOutlined/>
-                        <Link onClick={() => (dispatch(setAuthenticatedUser('')))} to='/'>logout</Link>
+                        <Link onClick={() => (dispatch(setAuthenticatedUser('')))} to='/login'>
+                            <LogoutOutlined/>logout
+                        </Link>
                     </Menu.Item>
                 </Menu>
                 <div>
@@ -73,4 +74,4 @@ const propsToState = ({username, users}) => {
         users
     }
 };
-export default connect(propsToState)(Dashboard);
+export default connect(propsToState)(LeaderBoard);
