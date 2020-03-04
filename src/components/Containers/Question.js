@@ -34,7 +34,8 @@ class Question extends Component {
             <Row>
                 <Col span={5}/>
                 <Col span={14}>
-                    <Alert message={message} type={message === 'Answered Successfully' ? "success " : "error"}/>
+                    {message &&
+                    <Alert message={message} type={message === 'Answered Successfully' ? "success " : "error"}/>}
                     <Card title={users[username].name}
                           extra={<Avatar
                               src={users[username].avatarURL}/>}

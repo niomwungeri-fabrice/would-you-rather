@@ -5,6 +5,7 @@ import {combineReducers} from 'redux';
 import {loadingBarReducer} from 'react-redux-loading';
 import {messages} from "./messages";
 import {nav} from "./nav";
+import {loadingReducer} from "./loading";
 
 export const rootReducer = combineReducers({
     users,
@@ -12,6 +13,7 @@ export const rootReducer = combineReducers({
     messages,
     current: nav,
     username: setAuth,
+    loading: loadingReducer,
     loadingBar: loadingBarReducer
 });
 
