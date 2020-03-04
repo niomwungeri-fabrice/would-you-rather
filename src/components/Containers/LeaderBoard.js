@@ -1,77 +1,61 @@
-import React, {Fragment} from "react";
-import {Menu} from 'antd';
+import React from "react";
 import 'antd/dist/antd.css';
-import {HomeOutlined, LogoutOutlined, UserOutlined, DashboardOutlined, QuestionCircleOutlined} from '@ant-design/icons';
-import Home from "./Home";
-import {Link} from "react-router-dom";
 import {connect} from "react-redux";
-import {setAuthenticatedUser} from "../../redux/actions/users";
+import {Avatar, Badge, Card} from "antd";
+
 
 class LeaderBoard extends React.Component {
-    state = {
-        current: 'home',
-    };
-
-    handleClick = e => {
-        this.setState({
-            current: e.key,
-        });
-    };
-    componentsSwitch = (key) => {
-        switch (key) {
-            case 'home':
-                return (<Home/>);
-            case 'newQuestion':
-                return (<h1>newQuestion</h1>);
-            case 'leaderBoard':
-                return (<h1>Leader</h1>);
-            default:
-                break;
-        }
-    };
-
     render() {
-        const {username, users, dispatch} = this.props;
+        const {users} = this.props;
         return (
-            <Fragment>
-                <Menu onClick={this.handleClick} selectedKeys={[this.state.current]} mode="horizontal">
-                    <Menu.Item key="home">
-                        <HomeOutlined/>
-                        Home
-                    </Menu.Item>
-
-                    <Menu.Item key="newQuestion">
-                        <QuestionCircleOutlined/>
-                        New Question
-                    </Menu.Item>
-                    <Menu.Item key="leaderBoard">
-                        <DashboardOutlined/>
-                        Leader Board
-                    </Menu.Item>
-                    <Menu.Item style={{
-                        marginLeft: "50px"
+            Object.keys(users).map((user, index) => (
+                <Card key={index} title={users[user].name}>
+                    <div style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
                     }}>
-                        <UserOutlined/>
-                        <span> Hello, {users[username].name}</span>
-                    </Menu.Item>
-                    <Menu.Item key="logout">
-                        <Link onClick={() => (dispatch(setAuthenticatedUser('')))} to='/login'>
-                            <LogoutOutlined/>logout
-                        </Link>
-                    </Menu.Item>
-                </Menu>
-                <div>
-                    {this.componentsSwitch(this.state.current)}
-                </div>
-            </Fragment>
+                        <div className="img">
+                            <Avatar size={64} src={users[user].avatarURL}/>
+                        </div>
+                        <div className="main">
+                            <div>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}>
+                                    <span>Answered Questions </span>
+                                    <span style={{
+                                        marginLeft: '5px'
+                                    }}> {Object.keys(users[user].answers).length}</span>
+                                </div>
+                                <hr/>
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                }}>
+                                    <span>Created Questions</span>
+                                    <span>{users[user].questions.length}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="score">
+                            <div>Score</div>
+                            <hr/>
+                            <Badge count={25}/>
+                        </div>
+                    </div>
+                </Card>
+            ))
         );
     }
 }
 
-const propsToState = ({username, users}) => {
+const propsToState = ({users}) => {
     return {
-        username,
         users
     }
 };
 export default connect(propsToState)(LeaderBoard);
+
+
+

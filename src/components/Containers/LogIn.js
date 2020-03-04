@@ -44,8 +44,8 @@ class Login extends Component {
                 <Row style={{
                     marginTop: "300px"
                 }}>
-                    <Col span={10}></Col>
-                    <Col span={4}>
+                    <Col span={9}/>
+                    <Col span={6}>
                         <Form
                             layout="horizontal"
                         >
@@ -63,7 +63,7 @@ class Login extends Component {
                             <div>{this.state.validationMessage}</div>
                         </Form>
                     </Col>
-                    <Col span={10}></Col>
+                    <Col span={9}/>
                 </Row>
             </div>
         );
