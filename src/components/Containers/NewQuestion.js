@@ -1,29 +1,70 @@
 import React from "react";
 import {Button, Input, Card} from "antd";
+import {connect} from "react-redux";
+import {handleCreateQuestion} from '../../redux/actions/questions';
 
-const NewQuestion = () => {
-    return (
-        <div>
-            <Card title="Default size card" style={{width: 600, marginTop: "10px"}}>
-                <Input placeholder="Option One"/>
-                <div style={{
-                    width: '100%',
-                    textAlign: 'center',
-                    borderBottom: '1px solid #000',
-                    lineHeight: '0.1em',
-                    margin: '20px 0 20px',
-                }}>
+class NewQuestion extends React.Component {
+    state = {
+        optionOne: "",
+        optionTwo: "",
+    };
+
+    handleInput = ({target: {value, name}}) => {
+        this.setState({[name]: value});
+    };
+
+    handleClick = (e) => {
+        e.preventDefault();
+        const {username} = this.props;
+        const {optionTwo, optionOne} = this.state;
+        this.props.dispatch(handleCreateQuestion({
+            author: username,
+            optionOneText: optionOne,
+            optionTwoText: optionTwo
+        }))
+    };
+
+    render() {
+        const {optionOne, optionTwo} = this.state;
+        return (
+            <div >
+                {/*TODO: Number of people who voted for that option*/}
+                {/*TODO: The option selected by the logged-in user should be clearly marked*/}
+                <Card title="Would you rather..." style={{width: 600, marginTop: "10px"}}>
+                    <Input
+                        onChange={this.handleInput}
+                        value={optionOne} name='optionOne'
+                        placeholder="Option One"/>
+                    <div style={{
+                        width: '100%',
+                        textAlign: 'center',
+                        borderBottom: '1px solid #000',
+                        lineHeight: '0.1em',
+                        margin: '20px 0 20px',
+                    }}>
                     <span style={{
                         background: "#fff",
                         padding: "0 10px",
                     }}>or</span>
-                </div>
-                <Input placeholder="Option Two"/>
-                <Button style={{
-                    marginTop: '10px'
-                }} type="primary" block>Submit</Button>
-            </Card>
-        </div>)
+                    </div>
+                    <Input
+                        onChange={this.handleInput}
+                        value={optionTwo}
+                        name='optionTwo'
+                        placeholder="Option Two"/>
+                    {/*TODO: the user should be taken to the home page*/}
+                    <Button onClick={this.handleClick} style={{
+                        marginTop: '10px'
+                    }} type="primary" block>Submit</Button>
+                </Card>
+            </div>)
+    }
 };
 
-export default NewQuestion
+const propsToState = ({username}) => {
+    return {
+        username,
+    }
+};
+
+export default connect(propsToState)(NewQuestion);

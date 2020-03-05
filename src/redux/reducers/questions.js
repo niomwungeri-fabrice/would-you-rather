@@ -1,19 +1,17 @@
-import {RECEIVE_QUESTIONS, SUCCESS_MESSAGE} from "../actions/questions";
+
+import {RECEIVE_DATA} from "../actions/shared";
+import {CREATE_QUESTION} from "../actions/questions";
 
 export const questions = (state = {}, action) => {
     switch (action.type) {
-        case RECEIVE_QUESTIONS:
+        case RECEIVE_DATA:
+            return action.questions;
+        case CREATE_QUESTION:
             return {
                 ...state,
-                ...action.questions
+                [action.question.id]: action.question
             };
-        case SUCCESS_MESSAGE:
-            return {
-                ...state,
-                ...action.message
-            };
-
-        default:
+            default:
             return state
     }
 };

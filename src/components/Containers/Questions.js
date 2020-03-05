@@ -1,8 +1,7 @@
 import React, {Component, Fragment} from "react";
-import {Card, Menu, Avatar, Button} from 'antd';
+import {Card, Menu, Avatar} from 'antd';
 import {connect} from "react-redux";
-import {withRouter} from 'react-router-dom';
-import {toggleNav} from '../../redux/actions/nav'
+import {Link, withRouter} from 'react-router-dom';
 
 class Questions extends Component {
     state = {
@@ -15,15 +14,8 @@ class Questions extends Component {
         });
     };
 
-    toPoll = (e, id) => {
-        this.props.dispatch(toggleNav(''));
-        this.props.history.push(`/question/${id}`)
-    };
-
-
     render() {
-
-        const {questions, users} = this.props;
+        const {unQuestions, anQuestions, users} = this.props;
         const {current} = this.state;
         return (
             <Fragment>
@@ -37,40 +29,40 @@ class Questions extends Component {
                     </Menu.Item>
                 </Menu>
                 <div>
+                    {/*TODO: The polls in both categories are arranged from the most recently created (top) to the least recently created (bottom)*/}
                     {this.state.current === 'unQuestions'
-                        ? Object.keys(questions).map((question, index) => (
-                            <Card key={index} title={users[questions[question].author].name}
+                        ? unQuestions.map((question, index) => (
+                            <Card key={index} title={users[question.author].name}
                                   extra={<Avatar
-                                      src={users[questions[question].author].avatarURL}/>}
+                                      src={users[question.author].avatarURL}/>}
                                   style={{width: "auto"}}>
                                 <h4>Would you rather:</h4>
                                 <ul>
-                                    <li>{questions[question].optionOne.text}</li>
-                                    <li>{questions[question].optionTwo.text}</li>
+                                    <li>{question.optionOne.text}</li>
+                                    <li>{question.optionTwo.text}</li>
                                 </ul>
-                                <Button
-                                    onClick={(e) => this.toPoll(e, questions[question].id)}
-                                    type="primary" ghost>
+                                <Link
+                                    to={{pathname: `/questions/${question.id}`,  state: {isAnswered: true}}}>
                                     View Poll
-                                </Button>
+                                </Link>
                             </Card>
+
                         ))
-                        : Object.keys(questions).map((question, index) => (
-                            <Card key={index} title={users[questions[question].author].name}
+                        : anQuestions.map((question, index) => (
+                            <Card key={index} title={users[question.author].name}
                                   extra={<Avatar
-                                      src={users[questions[question].author].avatarURL}/>}
+                                      src={users[question.author].avatarURL}/>}
                                   style={{width: "auto"}}>
                                 <div>
                                     <h4>Would you rather:</h4>
                                     <ul>
-                                        <li>{questions[question].optionOne.text}</li>
-                                        <li>{questions[question].optionTwo.text}</li>
+                                        <li>{question.optionOne.text}</li>
+                                        <li>{question.optionTwo.text}</li>
                                     </ul>
-                                    <Button
-                                        onClick={(e) => this.toPoll(e, questions[question].id)}
-                                        type="primary" ghost>
+                                    <Link
+                                        to={{pathname: `/questions/${question.id}`, state: {isAnswered: false}}}>
                                         View Poll
-                                    </Button>
+                                    </Link>
                                 </div>
                             </Card>
                         ))}
@@ -80,14 +72,14 @@ class Questions extends Component {
     }
 }
 
-const propsToState = ({questions, users, current}) => {
+const propsToState = ({questions, users, current, username}) => {
     return {
         questions,
         users,
-        current
+        current,
+        unQuestions: Object.keys(questions).filter(q => !(q in users[username].answers)).map(k => questions[k]),
+        anQuestions: Object.keys(questions).filter(q => (q in users[username].answers)).map(k => questions[k])
     }
 };
 
 export default withRouter(connect(propsToState)(Questions))
-
-

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Row, Col, Button, Select, Form} from 'antd';
+import {Row, Col, Button, Select, Form, Alert} from 'antd';
 import 'antd/dist/antd.css';
 import {connect} from "react-redux";
 import {withRouter, Redirect} from 'react-router-dom'
@@ -7,14 +7,14 @@ import {setAuthenticatedUser} from '../../redux/actions/users';
 
 class Login extends Component {
     state = {
-        username: '',
+        username: null,
         validationMessage: '',
         redirectToReferrer: false
     };
     handleLogin = () => {
-        const {dispatch} = this.props;
-        if (this.state.username === '') {
-            this.setState({
+        const {dispatch, history} = this.props;
+        if (this.state.username === null) {
+            return this.setState({
                 validationMessage: "Please select user"
             })
         }
@@ -22,6 +22,7 @@ class Login extends Component {
             redirectToReferrer: true
         });
         dispatch(setAuthenticatedUser(this.state.username));
+        history.push('/')
     };
 
     handleChange = (e) => {
@@ -33,7 +34,7 @@ class Login extends Component {
     render() {
         const {users} = this.props;
         const {from} = this.props.location.state || {from: {pathname: '/'}};
-        const {redirectToReferrer} = this.state;
+        const {redirectToReferrer, validationMessage} = this.state;
 
         if (redirectToReferrer === true) {
             return <Redirect to={from}/>
@@ -44,8 +45,8 @@ class Login extends Component {
                 <Row style={{
                     marginTop: "300px"
                 }}>
-                    <Col span={9}/>
-                    <Col span={6}>
+                    <Col span={7}/>
+                    <Col span={8}>
                         <Form
                             layout="horizontal"
                         >
@@ -60,10 +61,12 @@ class Login extends Component {
                             <Button onClick={this.handleLogin} type="primary" block>
                                 login
                             </Button>
-                            <div>{this.state.validationMessage}</div>
+                            <div style={{
+                                marginTop: '5px'
+                            }}>{validationMessage && <Alert message={`Error: ${validationMessage}`} type="error"/>}</div>
                         </Form>
                     </Col>
-                    <Col span={9}/>
+                    <Col span={7}/>
                 </Row>
             </div>
         );

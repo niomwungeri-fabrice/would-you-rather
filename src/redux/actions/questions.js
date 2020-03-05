@@ -1,8 +1,8 @@
-import {_getQuestions, _saveQuestionAnswer} from "../../api/_DATA";
+import {_saveQuestion, _saveQuestionAnswer} from "../../api/_DATA";
 
 
-export const RECEIVE_QUESTIONS = 'RECEIVE_QUESTIONS';
 export const SUCCESS_MESSAGE = 'SUCCESS_MESSAGE';
+export const CREATE_QUESTION = 'CREATE_QUESTION';
 
 
 const answerQuestions = message => {
@@ -12,25 +12,24 @@ const answerQuestions = message => {
     }
 };
 
-const receiveQuestions = questions => {
+const createQuestion=(question)=>{
     return {
-        type: RECEIVE_QUESTIONS,
-        questions
+        type: CREATE_QUESTION,
+        question
     }
 };
-
 
 export const handleAnswerQuestion = ({authedUser, qid, answer}) => (dispatch) => {
     return _saveQuestionAnswer({authedUser, qid, answer}).then(()=>{
             dispatch(answerQuestions('Answered Successfully'))}
     ).catch(()=>{
-        dispatch(answerQuestions(`Server error`))
+        dispatch(answerQuestions('Server error'))
     })
 };
 
-export const handleInitialQuestions = () => (dispatch) => {
-    return _getQuestions().then(questions => {
-        dispatch(receiveQuestions(questions));
+export const handleCreateQuestion = (question) => (dispatch) => {
+    return _saveQuestion(question).then(question => {
+        dispatch(createQuestion(question));
     })
 };
 
