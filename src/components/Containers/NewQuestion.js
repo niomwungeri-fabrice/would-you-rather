@@ -8,6 +8,7 @@ class NewQuestion extends React.Component {
         optionOne: "",
         optionTwo: "",
     };
+
     handleInput = ({target: {value, name}}) => {
         this.setState({[name]: value});
     };

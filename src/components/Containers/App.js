@@ -6,10 +6,11 @@ import LoadingBar from 'react-redux-loading';
 import Login from "./LogIn";
 import LeaderBoard from "./LeaderBoard";
 import PrivateRoute from "../PrivateRoute";
-import Home from "./Home";
+import Questions from "./Questions";
 import Nav from "./Nav";
 import Question from "./Question";
 import {Button, Result} from 'antd';
+import NewQuestion from "./NewQuestion";
 
 class App extends Component {
     componentDidMount() {
@@ -22,15 +23,16 @@ class App extends Component {
             <BrowserRouter>
                 <Fragment>
                     <LoadingBar/>
+                    {this.props.username !== null && <Nav/>}
                     {this.props.loading === true
                         ? null
                         : <div>
                             <Switch>
                                 <Route path='/login' component={Login}/>
                                 <PrivateRoute path='/leaderboard' component={LeaderBoard}/>
-                                <PrivateRoute path='/question/:id' component={Question}/>
-                                <PrivateRoute path='/home' exact component={Home}/>
-                                <PrivateRoute path='/' exact component={Nav}/>
+                                <PrivateRoute path='/questions/:questionId' component={Question}/>
+                                <PrivateRoute path='/add' exact component={NewQuestion}/>
+                                <PrivateRoute path='/' exact component={Questions}/>
                                 <Result
                                     status="404"
                                     title="404"
@@ -45,10 +47,10 @@ class App extends Component {
     }
 }
 
-const propsToState = ({username, loading}) => {
+const propsToState = ({loading, username}) => {
     return {
-        username,
-        loading
+        loading,
+        username
     }
 };
 export default connect(propsToState)(App);

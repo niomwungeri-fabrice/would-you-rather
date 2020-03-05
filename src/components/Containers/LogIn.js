@@ -12,7 +12,7 @@ class Login extends Component {
         redirectToReferrer: false
     };
     handleLogin = () => {
-        const {dispatch} = this.props;
+        const {dispatch, history} = this.props;
         if (this.state.username === '') {
             this.setState({
                 validationMessage: "Please select user"
@@ -22,6 +22,7 @@ class Login extends Component {
             redirectToReferrer: true
         });
         dispatch(setAuthenticatedUser(this.state.username));
+        history.push('/')
     };
 
     handleChange = (e) => {
