@@ -27,7 +27,9 @@ class NewQuestion extends React.Component {
     render() {
         const {optionOne, optionTwo} = this.state;
         return (
-            <div>
+            <div >
+                {/*TODO: Number of people who voted for that option*/}
+                {/*TODO: The option selected by the logged-in user should be clearly marked*/}
                 <Card title="Would you rather..." style={{width: 600, marginTop: "10px"}}>
                     <Input
                         onChange={this.handleInput}
@@ -50,6 +52,7 @@ class NewQuestion extends React.Component {
                         value={optionTwo}
                         name='optionTwo'
                         placeholder="Option Two"/>
+                    {/*TODO: the user should be taken to the home page*/}
                     <Button onClick={this.handleClick} style={{
                         marginTop: '10px'
                     }} type="primary" block>Submit</Button>

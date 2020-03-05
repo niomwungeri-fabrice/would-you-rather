@@ -29,6 +29,7 @@ class Questions extends Component {
                     </Menu.Item>
                 </Menu>
                 <div>
+                    {/*TODO: The polls in both categories are arranged from the most recently created (top) to the least recently created (bottom)*/}
                     {this.state.current === 'unQuestions'
                         ? unQuestions.map((question, index) => (
                             <Card key={index} title={users[question.author].name}
@@ -40,7 +41,6 @@ class Questions extends Component {
                                     <li>{question.optionOne.text}</li>
                                     <li>{question.optionTwo.text}</li>
                                 </ul>
-                                {/* todo: Direct me to answer the question*/}
                                 <Link
                                     to={{pathname: `/questions/${question.id}`,  state: {isAnswered: true}}}>
                                     View Poll

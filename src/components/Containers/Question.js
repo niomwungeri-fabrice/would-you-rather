@@ -1,6 +1,7 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
 import {Avatar, Button, Card, Radio, Alert, Progress} from "antd";
+import {CheckCircleTwoTone} from '@ant-design/icons';
 import {handleAnswerQuestion} from '../../redux/actions/questions'
 import {withRouter} from "react-router-dom";
 
@@ -24,14 +25,20 @@ class Question extends Component {
         });
     };
 
+    /* Todo: Please keep in mind that newly created polls will not be accessible at their url because of the way the backend is
+     set up in this application.) It should also display a navigation bar so that the user can easily navigate
+     anywhere in the application */
     render() {
-       const {isAnswered} =this.props.history.location.state;
+        const {isAnswered} = this.props.history.location.state;
         const {questionId, questions, users, username, message} = this.props;
         const radioStyle = {
             display: 'block',
             height: '30px',
             lineHeight: '30px',
         };
+        const optionOneVotes = questions[questionId].optionOne.votes.length;
+        const optionTwoVotes = questions[questionId].optionTwo.votes.length;
+        const totalVotes = optionOneVotes + optionTwoVotes;
         return (
             <Fragment>
                 {isAnswered ?
@@ -55,6 +62,8 @@ class Question extends Component {
                                 </Radio.Group>
                                 <br/>
                                 <div>{message}</div>
+                                {/*TODO: So what happens when someone votes in a poll? Upon voting in a poll, all of the information of an answered poll should be displayed*/}
+                                {/*TODO: Users can only vote once per poll; they shouldn’t be allowed to change their answer after they’ve voted*/}
                                 <Button
                                     onClick={this.handleSubmit}
                                     type="primary" ghost>
@@ -62,7 +71,7 @@ class Question extends Component {
                                 </Button>
                             </div>
                         </Card>
-                    </div> : <Card title={`${username} asked would ...`} extra={<Avatar
+                    </div> : <Card title={`${users[username].name} asked would ...`} extra={<Avatar
                         src={users[username].avatarURL}/>}
                                    style={{
                                        width: "auto",
@@ -73,17 +82,24 @@ class Question extends Component {
                         }}>
                             <div style={{
                                 textAlign: 'center'
-                            }}><h4>{questions[questionId].optionOne.text}</h4>
-                                <Progress type="circle" percent={75}/>
-                                <div>2 out 3 votes</div>
+                            }}>
+                                <h3>{questions[questionId].optionOne.text} {questions[questionId].optionOne.votes.includes(username) &&
+                                <span style={{
+                                    marginLeft: '8px'
+                                }}><CheckCircleTwoTone
+                                    twoToneColor="#52c41a"/> voted</span>}</h3>
+                                <Progress status='normal' type="circle" percent={optionOneVotes / totalVotes * 100}/>
+                                <div>{optionOneVotes} out {totalVotes} votes</div>
                             </div>
                             <div style={{
                                 textAlign: 'center'
                             }}>
 
-                                <h4>{questions[questionId].optionTwo.text}</h4>
-                                <Progress type="circle" percent={15}/>
-                                <div>1 out 3 votes</div>
+                                <h3>{questions[questionId].optionTwo.text} {questions[questionId].optionTwo.votes.includes(username) &&
+                                <span><CheckCircleTwoTone
+                                    twoToneColor="#52c41a"/> voted</span>}</h3>
+                                <Progress status='normal' type="circle" percent={optionTwoVotes / totalVotes * 100}/>
+                                <div>{optionTwoVotes} out {totalVotes} votes</div>
                             </div>
                         </div>
                     </Card>

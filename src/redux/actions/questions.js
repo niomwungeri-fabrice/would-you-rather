@@ -21,7 +21,6 @@ const createQuestion=(question)=>{
 
 export const handleAnswerQuestion = ({authedUser, qid, answer}) => (dispatch) => {
     return _saveQuestionAnswer({authedUser, qid, answer}).then(()=>{
-        // todo: add to the store
             dispatch(answerQuestions('Answered Successfully'))}
     ).catch(()=>{
         dispatch(answerQuestions('Server error'))

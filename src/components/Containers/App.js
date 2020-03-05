@@ -33,6 +33,7 @@ class App extends Component {
                                 <PrivateRoute path='/questions/:questionId' component={Question}/>
                                 <PrivateRoute path='/add' exact component={NewQuestion}/>
                                 <PrivateRoute path='/' exact component={Questions}/>
+                                {/*TODO: fix the button link to home page*/}
                                 <Result
                                     status="404"
                                     title="404"
