@@ -2,14 +2,13 @@ import React from "react";
 import 'antd/dist/antd.css';
 import {connect} from "react-redux";
 import {Avatar, Badge, Card} from "antd";
+import {sortLeaderBoard} from "../../utils/compare";
 
 
 class LeaderBoard extends React.Component {
     render() {
         const {users} = this.props;
         return (
-        /* TODO: Users should be ordered in descending order based on the sum of the number of questions they’ve asked and
-         the number of questions they’ve answered. The more questions you ask and answer, the higher up you move */
             Object.keys(users).map((user, index) => (
                 <Card key={index} title={users[user].name}>
                     <div style={{
@@ -43,7 +42,7 @@ class LeaderBoard extends React.Component {
                         <div className="score">
                             <div>Score</div>
                             <hr/>
-                            <Badge count={25}/>
+                            <Badge count={Object.keys(users[user].answers).length + users[user].questions.length}/>
                         </div>
                     </div>
                 </Card>
@@ -54,7 +53,7 @@ class LeaderBoard extends React.Component {
 
 const propsToState = ({users}) => {
     return {
-        users
+        users:Object.values(users).sort(sortLeaderBoard),
     }
 };
 export default connect(propsToState)(LeaderBoard);
