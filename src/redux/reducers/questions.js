@@ -11,7 +11,7 @@ export const questionsReducer = (state = {}, action) => {
                 [action.payload.qid]: {
                     ...state[action.payload.qid],
                     [action.payload.answer]: {
-                        ...state[action.payload.answer],
+                        ...state[action.payload.qid][action.payload.answer],
                         votes: state[action.payload.qid][action.payload.answer].votes.concat([action.payload.authedUser])
                     }
                 }

@@ -17,10 +17,10 @@ const answerQuestion = ({authedUser, qid, answer}) => {
     }
 };
 
-export const updateVotes= (authedUser, qid, answer) => {
+export const updateVotes = (authedUser, qid, answer) => {
     return {
         type: UPDATE_VOTES,
-        payload:{
+        payload: {
             authedUser, qid, answer
         }
     }
@@ -42,8 +42,8 @@ const createQuestion = (question) => {
 
 export const handleAnswerQuestion = ({authedUser, qid, answer}) => (dispatch) => {
     return _saveQuestionAnswer({authedUser, qid, answer}).then(() => {
+            dispatch(updateVotes(authedUser, qid, answer));
             dispatch(answerQuestion({authedUser, qid, answer}));
-            dispatch(updateVotes(authedUser, qid, answer))
         }
     )
 };
