@@ -39,6 +39,7 @@ class Question extends Component {
         const optionOneVotes = questions[questionId].optionOne.votes.length;
         const optionTwoVotes = questions[questionId].optionTwo.votes.length;
         const totalVotes = optionOneVotes + optionTwoVotes;
+        console.log(optionOneVotes, optionTwoVotes, totalVotes);
         return (
             <Fragment>
                 {isAnswered ?
@@ -58,8 +59,6 @@ class Question extends Component {
                                     </Radio>
                                 </Radio.Group>
                                 <br/>
-                                {/*todo: Upon voting in a poll, all of the information of the answered poll is displayed*/}
-                                {/*todo: The user’s response is recorded and is clearly visible on the poll details page*/}
                                 <Button style={{
                                     marginTop: '10px'
                                 }}
@@ -81,23 +80,23 @@ class Question extends Component {
                             <div style={{
                                 textAlign: 'center'
                             }}>
-                                {/*Todo: not selected after casting the vote*/}
                                 <h3>{questions[questionId].optionOne.text} {questions[questionId].optionOne.votes.includes(username) &&
                                 <span style={{
                                     marginLeft: '8px'
                                 }}><CheckCircleTwoTone
                                     twoToneColor="#52c41a"/> voted</span>}</h3>
-                                <Progress status='normal' type="circle" percent={optionOneVotes / totalVotes * 100}/>
+                                <Progress status='normal' type="circle"
+                                          percent={Math.round(optionOneVotes / totalVotes * 100)}/>
                                 <div>{optionOneVotes} out {totalVotes} votes</div>
                             </div>
                             <div style={{
                                 textAlign: 'center'
                             }}>
-                                {/*Todo: not showing states after create and voting of a question*/}
                                 <h3>{questions[questionId].optionTwo.text} {questions[questionId].optionTwo.votes.includes(username) &&
                                 <span><CheckCircleTwoTone
                                     twoToneColor="#52c41a"/> voted</span>}</h3>
-                                <Progress status='normal' type="circle" percent={optionTwoVotes / totalVotes * 100}/>
+                                <Progress status='normal' type="circle"
+                                          percent={Math.round(optionTwoVotes / totalVotes * 100)}/>
                                 <div>{optionTwoVotes} out {totalVotes} votes</div>
                             </div>
                         </div>

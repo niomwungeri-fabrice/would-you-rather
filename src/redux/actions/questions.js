@@ -5,7 +5,7 @@ import {updateUserQuestion} from "./users";
 export const CREATE_QUESTION = 'CREATE_QUESTION';
 export const TOGGLE_QUESTION = 'TOGGLE_QUESTION';
 export const ANSWER_QUESTION = 'ANSWER_QUESTION';
-
+export const UPDATE_VOTES = 'UPDATE_VOTES';
 const answerQuestion = ({authedUser, qid, answer}) => {
     return {
         type: ANSWER_QUESTION,
@@ -13,6 +13,15 @@ const answerQuestion = ({authedUser, qid, answer}) => {
             authedUser,
             qid,
             answer
+        }
+    }
+};
+
+export const updateVotes = (authedUser, qid, answer) => {
+    return {
+        type: UPDATE_VOTES,
+        payload: {
+            authedUser, qid, answer
         }
     }
 };
@@ -33,6 +42,7 @@ const createQuestion = (question) => {
 
 export const handleAnswerQuestion = ({authedUser, qid, answer}) => (dispatch) => {
     return _saveQuestionAnswer({authedUser, qid, answer}).then(() => {
+            dispatch(updateVotes(authedUser, qid, answer));
             dispatch(answerQuestion({authedUser, qid, answer}));
         }
     )
