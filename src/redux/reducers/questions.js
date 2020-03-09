@@ -2,7 +2,7 @@
 import {RECEIVE_DATA} from "../actions/shared";
 import {CREATE_QUESTION} from "../actions/questions";
 
-export const questions = (state = {}, action) => {
+export const questionsReducer = (state = {}, action) => {
     switch (action.type) {
         case RECEIVE_DATA:
             return action.questions;
