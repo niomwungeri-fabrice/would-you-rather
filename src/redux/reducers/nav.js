@@ -1,6 +1,6 @@
 import {TOGGLE_NAV} from "../actions/nav";
 
-export const nav = (state = "home", action) => {
+export const navReducer = (state = "home", action) => {
 
     switch (action.type) {
         case TOGGLE_NAV:

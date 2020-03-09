@@ -1,8 +1,9 @@
 import React, {Component, Fragment} from "react";
-import {Card, Menu, Avatar} from 'antd';
+import {Card, Menu, Avatar, Button} from 'antd';
 import {connect} from "react-redux";
-import {Link, withRouter} from 'react-router-dom';
-
+import {withRouter} from 'react-router-dom';
+import {setIsAnswered} from '../../redux/actions/questions'
+import {compare} from "../../utils/compare";
 class Questions extends Component {
     state = {
         current: 'unQuestions',
@@ -12,6 +13,13 @@ class Questions extends Component {
         this.setState({
             current: e.key,
         });
+    };
+
+    toPoll =(e,answer, id)=>{
+        e.preventDefault();
+        const {dispatch} = this.props;
+        dispatch(setIsAnswered(answer));
+        this.props.history.push(`/questions/${id}`);
     };
 
     render() {
@@ -29,7 +37,6 @@ class Questions extends Component {
                     </Menu.Item>
                 </Menu>
                 <div>
-                    {/*TODO: The polls in both categories are arranged from the most recently created (top) to the least recently created (bottom)*/}
                     {this.state.current === 'unQuestions'
                         ? unQuestions.map((question, index) => (
                             <Card key={index} title={users[question.author].name}
@@ -41,10 +48,9 @@ class Questions extends Component {
                                     <li>{question.optionOne.text}</li>
                                     <li>{question.optionTwo.text}</li>
                                 </ul>
-                                <Link
-                                    to={{pathname: `/questions/${question.id}`,  state: {isAnswered: true}}}>
-                                    View Poll
-                                </Link>
+                                <Button onClick={(e, answer, id)=>{this.toPoll(e, true, question.id)}}>
+                                    Go to poll
+                                </Button>
                             </Card>
 
                         ))
@@ -59,10 +65,9 @@ class Questions extends Component {
                                         <li>{question.optionOne.text}</li>
                                         <li>{question.optionTwo.text}</li>
                                     </ul>
-                                    <Link
-                                        to={{pathname: `/questions/${question.id}`, state: {isAnswered: false}}}>
+                                    <Button onClick={(e,answer, id)=>{this.toPoll(e,false, question.id)}}>
                                         View Poll
-                                    </Link>
+                                    </Button>
                                 </div>
                             </Card>
                         ))}
@@ -74,11 +79,12 @@ class Questions extends Component {
 
 const propsToState = ({questions, users, current, username}) => {
     return {
-        questions,
         users,
         current,
-        unQuestions: Object.keys(questions).filter(q => !(q in users[username].answers)).map(k => questions[k]),
-        anQuestions: Object.keys(questions).filter(q => (q in users[username].answers)).map(k => questions[k])
+        unQuestions: Object.keys(questions).filter(
+            q => !(q in users[username].answers)).map(k => questions[k]).sort(compare),
+        anQuestions: Object.keys(questions).filter
+        (q => (q in users[username].answers)).map(k => questions[k]).sort(compare),
     }
 };
 

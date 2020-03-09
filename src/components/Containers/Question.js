@@ -1,11 +1,13 @@
 import React, {Component, Fragment} from "react";
 import {connect} from "react-redux";
-import {Avatar, Button, Card, Radio, Alert, Progress} from "antd";
+import {Avatar, Button, Card, Radio, Progress} from "antd";
 import {CheckCircleTwoTone} from '@ant-design/icons';
 import {handleAnswerQuestion} from '../../redux/actions/questions'
 import {withRouter} from "react-router-dom";
+import {setIsAnswered} from '../../redux/actions/questions'
 
 class Question extends Component {
+
     handleSubmit = () => {
         const {dispatch, username, questionId} = this.props;
         dispatch(handleAnswerQuestion({
@@ -13,6 +15,7 @@ class Question extends Component {
             qid: questionId,
             answer: this.state.value
         }));
+        dispatch(setIsAnswered(false))
     };
 
     state = {
@@ -25,12 +28,9 @@ class Question extends Component {
         });
     };
 
-    /* Todo: Please keep in mind that newly created polls will not be accessible at their url because of the way the backend is
-     set up in this application.) It should also display a navigation bar so that the user can easily navigate
-     anywhere in the application */
     render() {
-        const {isAnswered} = this.props.history.location.state;
-        const {questionId, questions, users, username, message} = this.props;
+        const {isAnswered} = this.props;
+        const {questionId, questions, users, username} = this.props;
         const radioStyle = {
             display: 'block',
             height: '30px',
@@ -39,13 +39,11 @@ class Question extends Component {
         const optionOneVotes = questions[questionId].optionOne.votes.length;
         const optionTwoVotes = questions[questionId].optionTwo.votes.length;
         const totalVotes = optionOneVotes + optionTwoVotes;
+        console.log(optionOneVotes, optionTwoVotes, totalVotes);
         return (
             <Fragment>
                 {isAnswered ?
                     <div>
-                        {message &&
-                        <Alert message={message}
-                               type={message === 'Answered Successfully' ? "success " : "error"}/>}
                         <Card title={users[username].name}
                               extra={<Avatar
                                   src={users[username].avatarURL}/>}
@@ -61,17 +59,18 @@ class Question extends Component {
                                     </Radio>
                                 </Radio.Group>
                                 <br/>
-                                <div>{message}</div>
-                                {/*TODO: So what happens when someone votes in a poll? Upon voting in a poll, all of the information of an answered poll should be displayed*/}
-                                {/*TODO: Users can only vote once per poll; they shouldn’t be allowed to change their answer after they’ve voted*/}
-                                <Button
-                                    onClick={this.handleSubmit}
-                                    type="primary" ghost>
-                                    Submit
+                                {/*todo: Upon voting in a poll, all of the information of the answered poll is displayed*/}
+                                {/*todo: The user’s response is recorded and is clearly visible on the poll details page*/}
+                                <Button style={{
+                                    marginTop: '10px'
+                                }}
+                                        onClick={this.handleSubmit}
+                                        type="primary" ghost>
+                                    Vote
                                 </Button>
                             </div>
                         </Card>
-                    </div> : <Card title={`${users[username].name} asked would ...`} extra={<Avatar
+                    </div> : <Card title={`${users[username].name} asked Would you rather...`} extra={<Avatar
                         src={users[username].avatarURL}/>}
                                    style={{
                                        width: "auto",
@@ -83,6 +82,7 @@ class Question extends Component {
                             <div style={{
                                 textAlign: 'center'
                             }}>
+                                {/*Todo: not selected after casting the vote*/}
                                 <h3>{questions[questionId].optionOne.text} {questions[questionId].optionOne.votes.includes(username) &&
                                 <span style={{
                                     marginLeft: '8px'
@@ -94,7 +94,7 @@ class Question extends Component {
                             <div style={{
                                 textAlign: 'center'
                             }}>
-
+                                {/*Todo: not showing states after create and voting of a question*/}
                                 <h3>{questions[questionId].optionTwo.text} {questions[questionId].optionTwo.votes.includes(username) &&
                                 <span><CheckCircleTwoTone
                                     twoToneColor="#52c41a"/> voted</span>}</h3>
@@ -109,7 +109,7 @@ class Question extends Component {
     }
 }
 
-const mapStateToProps = ({questions, users, username, message}, ownProps) => {
+const mapStateToProps = ({questions, users, username, message, isAnswered}, ownProps) => {
     const {questionId} = ownProps.match.params;
 
     return {
@@ -117,7 +117,7 @@ const mapStateToProps = ({questions, users, username, message}, ownProps) => {
         questions,
         users,
         username,
-        message
+        isAnswered
     }
 };
 

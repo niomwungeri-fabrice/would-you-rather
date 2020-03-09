@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react'
-import {BrowserRouter, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Link, Route, Switch} from 'react-router-dom'
 import {connect} from "react-redux";
 import {asyncActionHandleReceiveData} from '../../redux/actions/shared'
 import LoadingBar from 'react-redux-loading';
@@ -9,7 +9,7 @@ import PrivateRoute from "../PrivateRoute";
 import Questions from "./Questions";
 import Nav from "./Nav";
 import Question from "./Question";
-import {Button, Result} from 'antd';
+import {Result} from 'antd';
 import NewQuestion from "./NewQuestion";
 
 class App extends Component {
@@ -33,12 +33,11 @@ class App extends Component {
                                 <PrivateRoute path='/questions/:questionId' component={Question}/>
                                 <PrivateRoute path='/add' exact component={NewQuestion}/>
                                 <PrivateRoute path='/' exact component={Questions}/>
-                                {/*TODO: fix the button link to home page*/}
                                 <Result
                                     status="404"
                                     title="404"
                                     subTitle="Sorry, the page you visited does not exist."
-                                    extra={<Button to='/' type="link">Back Home</Button>}>
+                                    extra={<Link className="ant-btn ant-btn-primary" to="/">Back Home</Link>}>
                                 </Result>
                             </Switch>
                         </div>}
