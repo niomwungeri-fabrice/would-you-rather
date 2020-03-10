@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Input, Card, Row, Col} from 'antd';
+import {Button, Input, Card, Row, Col, Alert} from 'antd';
 import {connect} from 'react-redux';
 import {handleCreateQuestion} from '../../redux/actions/questions';
 import '../../resources/css/newQuestion.css';
@@ -8,7 +8,8 @@ import '../../resources/css/shared.css';
 class NewQuestion extends React.Component {
     state = {
         optionOne: '',
-        optionTwo: ''
+        optionTwo: '',
+        message: ''
     };
 
     handleInput = ({target: {value, name}}) => {
@@ -17,8 +18,13 @@ class NewQuestion extends React.Component {
 
     handleClick = e => {
         e.preventDefault();
-        const {username, history} = this.props;
         const {optionTwo, optionOne} = this.state;
+        if (optionTwo === '' || optionTwo === '') {
+            return this.setState({
+                message: "Option 1 and Option 2 are both required"
+            })
+        }
+        const {username, history} = this.props;
         this.props.dispatch(
             handleCreateQuestion({
                 author: username,
@@ -26,11 +32,14 @@ class NewQuestion extends React.Component {
                 optionTwoText: optionTwo
             })
         );
+        this.setState({
+            message: ''
+        });
         history.push('/');
     };
 
     render() {
-        const {optionOne, optionTwo} = this.state;
+        const {optionOne, optionTwo, message} = this.state;
         return (
             <Row>
                 <Col span={2}/>
@@ -56,11 +65,13 @@ class NewQuestion extends React.Component {
                             placeholder="Option Two"
                         />
                         <Button className='submitBtn'
-                            onClick={this.handleClick}
-                            type="primary"
-                            block>
+                                onClick={this.handleClick}
+                                type="primary"
+                                block>
                             Submit
                         </Button>
+                        <div id='errorMessage'>{message &&
+                        <Alert message={`Error: ${message}`} type="error"/>}</div>
                     </Card>
                 </Col>
                 <Col span={2}/>
