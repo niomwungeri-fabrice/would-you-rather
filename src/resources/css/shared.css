@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.centered {
+    text-align: center;
+}
+.submitBtn{
+    margin-top: 10px;
+}
+
+.card-width-auto{
+    width: auto;
+}

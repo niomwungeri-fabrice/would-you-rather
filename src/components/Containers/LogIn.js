@@ -2,10 +2,12 @@ import React, {Component} from "react";
 import {Row, Col, Button, Select, Form, Alert} from 'antd';
 import 'antd/dist/antd.css';
 import {connect} from "react-redux";
-import {withRouter, Redirect} from 'react-router-dom'
+import {withRouter, Redirect} from 'react-router-dom';
 import {setAuthenticatedUser} from '../../redux/actions/users';
-import Logo from '../../resources/img/logo.png'
+import Logo from '../../resources/img/logo.png';
 import {LoginOutlined} from "@ant-design/icons";
+import '../../resources/css/login.css';
+import '../../resources/css/shared.css';
 
 class Login extends Component {
     state = {
@@ -44,20 +46,13 @@ class Login extends Component {
 
         return (
             <div>
-                <Row style={{
-                    marginTop: "100px"
-                }}>
+                <Row id='row'>
                     <Col span={6}/>
                     <Col span={10}>
                         <Form
                             layout="horizontal"
-                            style={{
-                                textAlign: 'center'
-                            }}
-                        >
-                            <img style={{
-                                marginBottom: '15px'
-                            }} alt='logo' src={Logo}/>
+                            className='centered'>
+                            <img alt='logo' src={Logo}/>
                             <Form.Item>
                                 <Select
                                     placeholder="Select a user"
@@ -68,11 +63,9 @@ class Login extends Component {
                                 </Select>
                             </Form.Item>
                             <Button onClick={this.handleLogin} type="primary" block>
-                                <LoginOutlined />login
+                                <LoginOutlined/>login
                             </Button>
-                            <div style={{
-                                marginTop: '5px'
-                            }}>{validationMessage &&
+                            <div id='errorMessage'>{validationMessage &&
                             <Alert message={`Error: ${validationMessage}`} type="error"/>}</div>
                         </Form>
                     </Col>

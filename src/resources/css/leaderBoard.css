@@ -1,4 +1,6 @@
-.cardContainer {
-    display: 'flex';
-    justify-content: 'space-between';
+#answered-questions{
+    margin-left: 5px;
+}
+.score{
+    text-align: center;
 }
