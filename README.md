@@ -70,3 +70,8 @@ _saveQuestionAnswer({authedUser, qid, answer})
 * [React](https://reactjs.org/)
 * [React/Redux](https://redux.js.org/)
 * [Ant Design](https://ant.design/)
+
+### References
+* [Udacity](https://classroom.udacity.com/nanodegrees/nd019-ent/dashboard/overview)
+* [StackOverFlow](https://stackoverflow.com/)
+* [tylermcginnis](https://tylermcginnis.com/)
