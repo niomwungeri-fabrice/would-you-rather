@@ -1,16 +1,15 @@
 import React, {Component, Fragment} from 'react'
-import {BrowserRouter, Link, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 import {connect} from "react-redux";
 import {asyncActionHandleReceiveData} from '../../redux/actions/shared'
-import LoadingBar from 'react-redux-loading';
 import Login from "./LogIn";
 import LeaderBoard from "./LeaderBoard";
 import PrivateRoute from "../PrivateRoute";
 import Questions from "./Questions";
 import Nav from "./Nav";
 import Question from "./Question";
-import {Result} from 'antd';
 import NewQuestion from "./NewQuestion";
+import {NotFound} from "../Presentational/NotFound";
 
 class App extends Component {
     componentDidMount() {
@@ -22,34 +21,25 @@ class App extends Component {
         return (
             <BrowserRouter>
                 <Fragment>
-                    <LoadingBar/>
                     {this.props.username !== null && <Nav/>}
-                    {this.props.loading === true
-                        ? null
-                        : <div>
-                            <Switch>
-                                <Route path='/login' component={Login}/>
-                                <PrivateRoute path='/leaderboard' component={LeaderBoard}/>
-                                <PrivateRoute path='/questions/:questionId' component={Question}/>
-                                <PrivateRoute path='/add' exact component={NewQuestion}/>
-                                <PrivateRoute path='/' exact component={Questions}/>
-                                <Result
-                                    status="404"
-                                    title="404"
-                                    subTitle="Sorry, the page you visited does not exist."
-                                    extra={<Link className="ant-btn ant-btn-primary" to="/">Back Home</Link>}>
-                                </Result>
-                            </Switch>
-                        </div>}
+                    <div>
+                        <Switch>
+                            <PrivateRoute path='/' exact component={Questions}/>
+                            <Route path='/login' exact component={Login}/>
+                            <PrivateRoute path='/leaderboard' exact component={LeaderBoard}/>
+                            <PrivateRoute path='/questions/:questionId' exact component={Question}/>
+                            <PrivateRoute path='/add' exact component={NewQuestion}/>
+                            <PrivateRoute exact component={NotFound}/>
+                        </Switch>
+                    </div>
                 </Fragment>
             </BrowserRouter>
         )
     }
 }
 
-const propsToState = ({loading, username}) => {
+const propsToState = ({username}) => {
     return {
-        loading,
         username
     }
 };

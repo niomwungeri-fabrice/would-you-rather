@@ -9,6 +9,7 @@ const receiveData = (users, questions) => {
     }
 };
 
+
 export const asyncActionHandleReceiveData = () =>(dispatch)=>{
     return Promise.all([
         _getQuestions(),

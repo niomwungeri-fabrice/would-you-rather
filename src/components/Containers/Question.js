@@ -7,6 +7,7 @@ import {withRouter} from "react-router-dom";
 import {setIsAnswered} from '../../redux/actions/questions';
 import '../../resources/css/question.css';
 import '../../resources/css/shared.css'
+import {NotFound} from "../Presentational/NotFound";
 
 class Question extends Component {
 
@@ -31,12 +32,14 @@ class Question extends Component {
     };
 
     render() {
-        const {isAnswered} = this.props;
         const {questionId, questions, users, username} = this.props;
+        if (!Object.keys(questions).includes(questionId)) {
+            return <NotFound/>
+        }
+        const {isAnswered} = this.props;
         const optionOneVotes = questions[questionId].optionOne.votes.length;
         const optionTwoVotes = questions[questionId].optionTwo.votes.length;
         const totalVotes = optionOneVotes + optionTwoVotes;
-
         return (
             <Fragment>
                 {isAnswered ?
