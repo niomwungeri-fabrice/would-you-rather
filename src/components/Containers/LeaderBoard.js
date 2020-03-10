@@ -6,8 +6,8 @@ import {sortLeaderBoard} from "../../utils/compare";
 import '../../resources/css/leaderBoard.css'
 import '../../resources/css/shared.css'
 
-const LeaderBoard = () => {
-    const {users} = this.props;
+const LeaderBoard = (props) => {
+    const {users} = props;
     return (
         Object.keys(users).map((user, index) => (
             <Card key={index} title={users[user].name}>

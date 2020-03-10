@@ -9,8 +9,8 @@ import {toggleNav} from '../../redux/actions/nav';
 import '../../resources/css/shared.css'
 import '../../resources/css/nav.css'
 
-const Nav = () => {
-    const {username, users, dispatch, current} = this.props;
+const Nav = (props) => {
+    const {username, users, dispatch, current} = props;
     return (
         <div className='container'>
             <Menu className='centered' onClick={(e) => (dispatch(toggleNav(e.key)))} selectedKeys={[current]}
