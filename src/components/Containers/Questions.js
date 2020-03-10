@@ -4,6 +4,8 @@ import {connect} from "react-redux";
 import {withRouter} from 'react-router-dom';
 import {setIsAnswered} from '../../redux/actions/questions'
 import {compare} from "../../utils/compare";
+import '../../resources/css/shared.css'
+
 class Questions extends Component {
     state = {
         current: 'unQuestions',
@@ -15,7 +17,7 @@ class Questions extends Component {
         });
     };
 
-    toPoll =(e,answer, id)=>{
+    toPoll = (e, answer, id) => {
         e.preventDefault();
         const {dispatch} = this.props;
         dispatch(setIsAnswered(answer));
@@ -42,13 +44,15 @@ class Questions extends Component {
                             <Card key={index} title={users[question.author].name}
                                   extra={<Avatar
                                       src={users[question.author].avatarURL}/>}
-                                  style={{width: "auto"}}>
+                                  className='card-width-auto'>
                                 <h4>Would you rather:</h4>
                                 <ul>
                                     <li>{question.optionOne.text}</li>
                                     <li>{question.optionTwo.text}</li>
                                 </ul>
-                                <Button onClick={(e, answer, id)=>{this.toPoll(e, true, question.id)}}>
+                                <Button onClick={(e, answer, id) => {
+                                    this.toPoll(e, true, question.id)
+                                }}>
                                     Go to poll
                                 </Button>
                             </Card>
@@ -58,14 +62,16 @@ class Questions extends Component {
                             <Card key={index} title={users[question.author].name}
                                   extra={<Avatar
                                       src={users[question.author].avatarURL}/>}
-                                  style={{width: "auto"}}>
+                                  className='card-width-auto'>
                                 <div>
                                     <h4>Would you rather:</h4>
                                     <ul>
                                         <li>{question.optionOne.text}</li>
                                         <li>{question.optionTwo.text}</li>
                                     </ul>
-                                    <Button onClick={(e,answer, id)=>{this.toPoll(e,false, question.id)}}>
+                                    <Button onClick={(e, answer, id) => {
+                                        this.toPoll(e, false, question.id)
+                                    }}>
                                         View Poll
                                     </Button>
                                 </div>

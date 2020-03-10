@@ -1,0 +1,14 @@
+.options {
+    display: block;
+    height: 30px;
+    line-height: 30px;
+}
+
+.progress-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.voted {
+    margin-left: 8px;
+}
