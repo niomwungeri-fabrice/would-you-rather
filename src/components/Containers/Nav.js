@@ -9,41 +9,37 @@ import {toggleNav} from '../../redux/actions/nav';
 import '../../resources/css/shared.css'
 import '../../resources/css/nav.css'
 
-class Nav extends React.Component {
+const Nav = () => {
+    const {username, users, dispatch, current} = this.props;
+    return (
+        <div className='container'>
+            <Menu className='centered' onClick={(e) => (dispatch(toggleNav(e.key)))} selectedKeys={[current]}
+                  mode="horizontal">
+                <Menu.Item key="home">
+                    <Link to='/'><HomeOutlined/> home</Link>
+                </Menu.Item>
+                <Menu.Item key="newQuestion">
+                    <Link to='/add'><QuestionCircleOutlined/> New Question</Link>
+                </Menu.Item>
+                <Menu.Item key="leaderBoard">
+                    <Link to='/leaderboard'> <DashboardOutlined/> Leader Board</Link>
+                </Menu.Item>
+            </Menu>
+            <div>
+                <Avatar
+                    src={users[username].avatarURL}/>
+                <span> Hello, {users[username].name}</span>
 
-
-    render() {
-        const {username, users, dispatch, current} = this.props;
-        return (
-            <div className='container'>
-                <Menu className='centered' onClick={(e) => (dispatch(toggleNav(e.key)))} selectedKeys={[current]}
-                      mode="horizontal">
-                    <Menu.Item key="home">
-                        <Link to='/'><HomeOutlined/> home</Link>
-                    </Menu.Item>
-                    <Menu.Item key="newQuestion">
-                        <Link to='/add'><QuestionCircleOutlined/> New Question</Link>
-                    </Menu.Item>
-                    <Menu.Item key="leaderBoard">
-                        <Link to='/leaderboard'> <DashboardOutlined/> Leader Board</Link>
-                    </Menu.Item>
-                </Menu>
-                <div>
-                    <Avatar
-                        src={users[username].avatarURL}/>
-                    <span> Hello, {users[username].name}</span>
-
-                    <Button className='logout' type='primary' onClick={() => {
-                        dispatch(dispatch(toggleNav('home')));
-                        dispatch(setAuthenticatedUser(null))
-                    }} to='/login'>
-                        <LogoutOutlined/>logout
-                    </Button>
-                </div>
+                <Button className='logout' type='primary' onClick={() => {
+                    dispatch(dispatch(toggleNav('home')));
+                    dispatch(setAuthenticatedUser(null))
+                }} to='/login'>
+                    <LogoutOutlined/>logout
+                </Button>
             </div>
-        );
-    }
-}
+        </div>
+    );
+};
 
 const propsToState = ({username, users, current}) => {
     return {
