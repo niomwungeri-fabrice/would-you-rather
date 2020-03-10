@@ -15,8 +15,9 @@ class Login extends Component {
         validationMessage: '',
         redirectToReferrer: false
     };
+
     handleLogin = () => {
-        const {dispatch, history} = this.props;
+        const {dispatch} = this.props;
         if (this.state.username === null) {
             return this.setState({
                 validationMessage: "Please select user"
@@ -26,7 +27,6 @@ class Login extends Component {
             redirectToReferrer: true
         });
         dispatch(setAuthenticatedUser(this.state.username));
-        history.push('/')
     };
 
     handleChange = (e) => {
@@ -43,7 +43,6 @@ class Login extends Component {
         if (redirectToReferrer === true) {
             return <Redirect to={from}/>
         }
-
         return (
             <div>
                 <Row id='row'>
@@ -76,9 +75,10 @@ class Login extends Component {
     }
 }
 
-const propsToState = ({users}) => {
+const propsToState = ({users, current}) => {
     return {
         users,
+        current
     }
 };
 
