@@ -113,7 +113,7 @@ let questions = {
             text: 'write Swift'
         }
     },
-}
+};
 
 function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));

@@ -10,6 +10,9 @@ import '../../resources/css/shared.css'
 import {NotFound} from "../Presentational/NotFound";
 
 class Question extends Component {
+    state = {
+        value: "optionOne",
+    };
 
     handleSubmit = () => {
         const {dispatch, username, questionId} = this.props;
@@ -19,10 +22,6 @@ class Question extends Component {
             answer: this.state.value
         }));
         dispatch(setIsAnswered(false))
-    };
-
-    state = {
-        value: "optionOne",
     };
 
     onChange = e => {

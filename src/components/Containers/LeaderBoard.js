@@ -6,40 +6,38 @@ import {sortLeaderBoard} from "../../utils/compare";
 import '../../resources/css/leaderBoard.css'
 import '../../resources/css/shared.css'
 
-class LeaderBoard extends React.Component {
-    render() {
-        const {users} = this.props;
-        return (
-            Object.keys(users).map((user, index) => (
-                <Card key={index} title={users[user].name}>
-                    <div className='container'>
-                        <div className="img">
-                            <Avatar size={64} src={users[user].avatarURL}/>
-                        </div>
-                        <div className="main">
-                            <div>
-                                <div className='container'>
-                                    <span>Answered Questions </span>
-                                    <span id='answered-questions'> {Object.keys(users[user].answers).length}</span>
-                                </div>
-                                <hr/>
-                                <div className='container'>
-                                    <span>Created Questions</span>
-                                    <span>{users[user].questions.length}</span>
-                                </div>
+const LeaderBoard = () => {
+    const {users} = this.props;
+    return (
+        Object.keys(users).map((user, index) => (
+            <Card key={index} title={users[user].name}>
+                <div className='container'>
+                    <div className="img">
+                        <Avatar size={64} src={users[user].avatarURL}/>
+                    </div>
+                    <div className="main">
+                        <div>
+                            <div className='container'>
+                                <span>Answered Questions </span>
+                                <span id='answered-questions'> {Object.keys(users[user].answers).length}</span>
+                            </div>
+                            <hr/>
+                            <div className='container'>
+                                <span>Created Questions</span>
+                                <span>{users[user].questions.length}</span>
                             </div>
                         </div>
-                        <div className="score">
-                            <div>Score</div>
-                            <hr/>
-                            <Badge count={Object.keys(users[user].answers).length + users[user].questions.length}/>
-                        </div>
                     </div>
-                </Card>
-            ))
-        );
-    }
-}
+                    <div className="score">
+                        <div>Score</div>
+                        <hr/>
+                        <Badge count={Object.keys(users[user].answers).length + users[user].questions.length}/>
+                    </div>
+                </div>
+            </Card>
+        ))
+    );
+};
 
 const propsToState = ({users}) => {
     return {
